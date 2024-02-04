@@ -6,7 +6,7 @@ authors = ["YoheiHayamizu <hayamizu0111@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8.0"
+python = "^3.8.1"
 gymnasium = "^0.29.1"
 pygame = "^2.5.1"
 
