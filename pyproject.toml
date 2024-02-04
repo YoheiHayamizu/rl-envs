@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cp-envs"
+name = "rl-envs"
 version = "0.1.2"
 description = ""
 authors = ["YoheiHayamizu <hayamizu0111@gmail.com>"]
