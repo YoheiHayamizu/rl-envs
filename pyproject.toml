@@ -4,11 +4,15 @@ version = "0.1.2"
 description = ""
 authors = ["YoheiHayamizu <hayamizu0111@gmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "rl_envs", from = "." },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
 gymnasium = "^0.29.1"
 pygame = "^2.5.1"
+matplotlib = "^3.4.2"
 
 
 [build-system]

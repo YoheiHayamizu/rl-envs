@@ -12,7 +12,7 @@ except ImportError as e:
         "pygame is not installed, run `pip install gymnasium[classic-control]`"
     ) from e
 
-from cp_envs.envs.blocksworld.utils import generate_random_state, validate_state
+from rl_envs.blocksworld.utils import generate_random_state, validate_state
 
 
 class BlocksworldEnv(gym.Env):
@@ -48,22 +48,28 @@ class BlocksworldEnv(gym.Env):
         self.char2num["_"] = 0
         self.char2num.update({chr(x + 65): x + 1 for x in range(num_blocks)})
 
-        self.observation_space = spaces.MultiDiscrete(nvec=np.array([num_blocks + 1] * num_blocks * 2))
+        self.observation_space = spaces.MultiDiscrete(
+            nvec=np.array([num_blocks + 1] * num_blocks * 2))
         # An action is move(X,Y). X can be a block, and Y can be a block or table.
         possible_combo = [combo for combo in product(list(self.char2num.keys())[1:], list(self.char2num.keys()))
                           if len(set(combo)) == len(combo)]  # remove (A,A), (B,B), ...
         action_space = len(possible_combo)
         self.action_space = spaces.Discrete(action_space)
-        self.a2s = {x: f"move({combo[0]},{combo[1]})" for x, combo in enumerate(possible_combo)}
+        self.a2s = {x: f"move({combo[0]},{combo[1]})" for x,
+                    combo in enumerate(possible_combo)}
         self.s2a = {v: k for k, v in self.a2s.items()}
-        self.a2st = {x: (self.char2num[combo[0]], self.char2num[combo[1]]) for x, combo in enumerate(possible_combo)}
+        self.a2st = {x: (self.char2num[combo[0]], self.char2num[combo[1]])
+                     for x, combo in enumerate(possible_combo)}
         self.s2st = {k: self.a2st[v] for k, v in self.s2a.items()}
 
         # All valid states
         self.valid_states = self.get_valid_states()
-        self.valid_state_str = set([str(self.state_decoder(x)[0]) for x in self.valid_states])
-        self.valid_state_str_i2k = {i: k for i, k in enumerate(self.valid_state_str)}
-        self.valid_state_str_k2i = {k: i for i, k in enumerate(self.valid_state_str)}
+        self.valid_state_str = set(
+            [str(self.state_decoder(x)[0]) for x in self.valid_states])
+        self.valid_state_str_i2k = {i: k for i,
+                                    k in enumerate(self.valid_state_str)}
+        self.valid_state_str_k2i = {k: i for i,
+                                    k in enumerate(self.valid_state_str)}
 
         # Count the number of steps
         self.number_of_steps = 0
@@ -81,7 +87,8 @@ class BlocksworldEnv(gym.Env):
         self.isopen = True
         self.state = None
 
-        gym.logger.info(f"observation space of BlocksworldEnv: {self.observation_space}")
+        gym.logger.info(
+            f"observation space of BlocksworldEnv: {self.observation_space}")
         gym.logger.info(f"action space of BlocksworldEnv: {self.action_space}")
 
     def get_info(self):
@@ -144,7 +151,8 @@ class BlocksworldEnv(gym.Env):
         # Check if the environment is reset
         assert self.state is not None, "Call reset before using step method."
         # Check if the action is valid
-        assert self.action_space.contains(action), f"{action} ({self.a2s[action]}) invalid"
+        assert self.action_space.contains(
+            action), f"{action} ({self.a2s[action]}) invalid"
 
         state = self.state.copy()
         # print("aaa", self.state, action, self.a2s[action], current_state)
@@ -175,7 +183,8 @@ class BlocksworldEnv(gym.Env):
 
     def render(self):
         if self.render_mode is None:
-            gym.logger.debug("No render mode specified. Use render_mode='human' or render_mode='rgb_array'.")
+            gym.logger.debug(
+                "No render mode specified. Use render_mode='human' or render_mode='rgb_array'.")
             return
         return self._render_frame()
 
@@ -248,8 +257,10 @@ class BlocksworldEnv(gym.Env):
 
         self.surf = pygame.transform.flip(self.surf, False, True)
 
-        self.surf.blit(self.Font.render("Current State", False, (0, 0, 0)), (10, 10))
-        self.surf.blit(self.Font.render("Goal State", False, (0, 0, 0)), (w // 2 + 10, 10))
+        self.surf.blit(self.Font.render(
+            "Current State", False, (0, 0, 0)), (10, 10))
+        self.surf.blit(self.Font.render(
+            "Goal State", False, (0, 0, 0)), (w // 2 + 10, 10))
 
         self.window.blit(self.surf, (0, 0))
         if self.render_mode == "human":
@@ -310,19 +321,23 @@ class BlocksworldEnv(gym.Env):
         new_state[src - 1] = tar
 
         if not validate_state(new_state):
-            gym.logger.debug(f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
+            gym.logger.debug(
+                f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
             gym.logger.debug(f"Next state {self.num2char[tar]} is not valid")
             return False
 
         if np.all(state == new_state):
-            gym.logger.debug(f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
-            gym.logger.debug(f"{self.num2char[tar]} already has {self.num2char[src]}")
+            gym.logger.debug(
+                f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
+            gym.logger.debug(
+                f"{self.num2char[tar]} already has {self.num2char[src]}")
             return False
 
         if src in state:
             # print((f"Action taken: move({self.num2char[src]},{self.num2char[tar]})"),
             #       src, tar, state, new_state,  np.where(state == src))
-            gym.logger.debug(f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
+            gym.logger.debug(
+                f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
             gym.logger.debug(f"{self.num2char[src]} cannot move:" +
                              f"{self.num2char[src]} has " +
                              f"{self.num2char[np.where(state == src)[0][0] + 1]}")
@@ -331,7 +346,8 @@ class BlocksworldEnv(gym.Env):
         if tar != 0 and tar in state:
             # print((f"Action taken: move({self.num2char[src]},{self.num2char[tar]})"),
             #       src, tar, state, np.where(state == tar))
-            gym.logger.debug(f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
+            gym.logger.debug(
+                f"Action taken: move({self.num2char[src]},{self.num2char[tar]})")
             gym.logger.debug(f"{self.num2char[tar]} cannot have a block on it:" +
                              f"{self.num2char[tar]} has " +
                              f"{self.num2char[np.where(state == tar)[0][0] + 1]}")
@@ -395,7 +411,8 @@ if __name__ == "__main__":
         n_state, reward, terminated, truncated, n_info = env.step(action)
         print(f"action: {env.a2s[action]}")
         print(f"Cur: {n_info['cs']}, Goal: {n_info['gs']}")
-        print(f"reward: {reward}, terminated: {terminated}, truncated: {truncated}")
+        print(
+            f"reward: {reward}, terminated: {terminated}, truncated: {truncated}")
         if terminated:
             break
         state = n_state

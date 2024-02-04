@@ -1,22 +1,25 @@
+# necessary for `envs.__init__` which registers all gymnasium environments and loads plugins
+
+
 from gymnasium.envs.registration import register
 
 register(
     id='BlockWorld-n2-v0',
-    entry_point='cp_envs.envs.blocksworld.blocksworld:BlocksworldEnv',
+    entry_point='rl_envs.blocksworld.blocksworld:BlocksworldEnv',
     kwargs={
         "num_blocks": 2,
     }
 )
 register(
     id='BlockWorld-n3-v0',
-    entry_point='cp_envs.envs.blocksworld.blocksworld:BlocksworldEnv',
+    entry_point='rl_envs.blocksworld.blocksworld:BlocksworldEnv',
     kwargs={
         "num_blocks": 3,
     }
 )
 register(
     id='BlockWorld-n3-t1-v0',
-    entry_point='cp_envs.envs.blocksworld.blocksworld:BlocksworldEnv',
+    entry_point='rl_envs.blocksworld.blocksworld:BlocksworldEnv',
     kwargs={
         "num_blocks": 3,
         "goal_state": [0, 0, 1],
@@ -24,14 +27,14 @@ register(
 )
 register(
     id='BlockWorld-n4-v0',
-    entry_point='cp_envs.envs.blocksworld.blocksworld:BlocksworldEnv',
+    entry_point='rl_envs.blocksworld.blocksworld:BlocksworldEnv',
     kwargs={
         "num_blocks": 4,
     }
 )
 register(
     id='BlockWorld-n4-t1-v0',
-    entry_point='cp_envs.envs.blocksworld.blocksworld:BlocksworldEnv',
+    entry_point='rl_envs.blocksworld.blocksworld:BlocksworldEnv',
     kwargs={
         "num_blocks": 4,
         "init_state": [3, 0, 0, 0],
@@ -41,7 +44,7 @@ register(
 
 register(
     id='BlockWorld-n5-v0',
-    entry_point='cp_envs.envs.blocksworld.blocksworld:BlocksworldEnv',
+    entry_point='rl_envs.blocksworld.blocksworld:BlocksworldEnv',
     kwargs={
         "num_blocks": 5,
     }
@@ -49,7 +52,7 @@ register(
 
 register(
     id='Bridge-v1',
-    entry_point='cp_envs.envs.maze.bridge:BridgeEnv',
+    entry_point='rl_envs.gridworld.bridge:BridgeEnv',
     kwargs={
         "render_mode": "rgb_array",
     },
@@ -57,7 +60,7 @@ register(
 
 register(
     id='Bridge-v0',
-    entry_point='cp_envs.envs.maze.gridworld:OneDimensionalGridWorld',
+    entry_point='rl_envs.gridworld.gridworld:OneDimensionalGridWorld',
     kwargs={
         "width": 10,
         "noise": 0.0,
@@ -70,7 +73,7 @@ register(
 
 register(
     id='GridWorld-v0',
-    entry_point='cp_envs.envs.maze.gridworld:GridWorld',
+    entry_point='rl_envs.gridworld.gridworld:GridWorld',
     kwargs={
         "width": 4,
         "height": 3,

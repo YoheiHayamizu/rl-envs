@@ -1,6 +1,6 @@
 import unittest
 
-from cp_envs.envs.blocksworld.utils import validate_state
+from rl_envs.blocksworld.utils import validate_state
 
 
 class TestUtils(unittest.TestCase):

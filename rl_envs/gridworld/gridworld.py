@@ -3,8 +3,8 @@ from typing import Optional
 import warnings
 from enum import Enum
 
-from cp_envs.envs.maze.mdp import *
-from cp_envs.envs.maze.rendering_utils import *
+from rl_envs.gridworld.mdp import *
+from rl_envs.gridworld.rendering_utils import *
 
 
 class GridWorld(MDPEnv):
@@ -54,7 +54,8 @@ class GridWorld(MDPEnv):
         self.episode_rewards = []
 
         self.action_space = gym.spaces.Discrete(5)
-        self.observation_space = gym.spaces.MultiDiscrete([self.width + 1, self.height + 1])
+        self.observation_space = gym.spaces.MultiDiscrete(
+            [self.width + 1, self.height + 1])
 
         self.state = self.get_initial_state()
 
@@ -282,7 +283,8 @@ class GridWorld(MDPEnv):
             import matplotlib.pyplot as plt
             return True
         except ModuleNotFoundError:
-            warnings.warn("Matplotlib not installed. Cannot visualise gridworld.")
+            warnings.warn(
+                "Matplotlib not installed. Cannot visualise gridworld.")
             return False
 
     def set_render_mode(self, render_mode):
@@ -293,7 +295,8 @@ class GridWorld(MDPEnv):
         # Check if matplotlib is installed and warn if not and render mode is not ansi
         if not self.matplotlib_installed() and render_mode != 'ansi':
             self.render_mode = 'ansi'
-            warnings.warn("Matplotlib not installed. Cannot visualise gridworld.")
+            warnings.warn(
+                "Matplotlib not installed. Cannot visualise gridworld.")
 
         return render_mode
 
@@ -398,7 +401,8 @@ class GridWorld(MDPEnv):
 
             for x in range(self.width):
                 if (x, y) == self.get_initial_state():
-                    result += " | {}  ||  * |  {}".format(left_arrow, right_arrow)
+                    result += " | {}  ||  * |  {}".format(
+                        left_arrow, right_arrow)
                 elif (x, y) in self.blocked_states:
                     result += block
                 elif (x, y) in self.get_goal_states().keys():
@@ -406,12 +410,14 @@ class GridWorld(MDPEnv):
                         self.get_goal_states()[(x, y)]
                     )
                 else:
-                    result += " | {}           {}".format(left_arrow, right_arrow)
+                    result += " | {}           {}".format(
+                        left_arrow, right_arrow)
             result += " |\n"
 
             for x in range(self.width):
                 if (x, y) == self.get_initial_state():
-                    result += " |    ||====|   ".format(left_arrow, right_arrow)
+                    result += " |    ||====|   ".format(
+                        left_arrow, right_arrow)
                 elif (x, y) in self.blocked_states:
                     result += block
                 else:
@@ -561,24 +567,29 @@ class GridWorld(MDPEnv):
 
     def initialise_grid(self, grid_size=1.5):
         """ Initialise a gridworld grid """
-        fig = plt.figure(figsize=(self.width * grid_size, self.height * grid_size))
-        plt.subplots_adjust(top=0.92, bottom=0.01, right=1, left=0, hspace=0, wspace=0)
+        fig = plt.figure(
+            figsize=(self.width * grid_size, self.height * grid_size))
+        plt.subplots_adjust(top=0.92, bottom=0.01, right=1,
+                            left=0, hspace=0, wspace=0)
         ax = fig.add_subplot(1, 1, 1)
 
         # Initialise the map to all white
-        img = [[COLOURS['white'] for _ in range(self.width)] for _ in range(self.height)]
+        img = [[COLOURS['white']
+                for _ in range(self.width)] for _ in range(self.height)]
 
         # Render the grid
         for y in range(0, self.height):
             for x in range(0, self.width):
                 if (x, y) in self.goal_states:
-                    img[y][x] = COLOURS['red'] if self.goal_states[(x, y)] < 0 else COLOURS['green']
+                    img[y][x] = COLOURS['red'] if self.goal_states[(
+                        x, y)] < 0 else COLOURS['green']
                 elif (x, y) in self.blocked_states:
                     img[y][x] = COLOURS['grey']
 
         ax.xaxis.set_ticklabels([])  # clear x tick labels
         ax.axes.yaxis.set_ticklabels([])  # clear y tick labels
-        ax.tick_params(which='both', top=False, left=False, right=False, bottom=False)
+        ax.tick_params(which='both', top=False, left=False,
+                       right=False, bottom=False)
         ax.set_xticks([w - 0.5 for w in range(0, self.width, 1)])
         ax.set_yticks([h - 0.5 for h in range(0, self.height, 1)])
         ax.grid(color='lightgrey')
@@ -592,7 +603,8 @@ class GridWorld(MDPEnv):
         for y in range(0, self.height):
             for x in range(0, self.width):
                 if (x, y) == current_position:
-                    self.ax.scatter(x, y, s=2000, marker='o', edgecolors='none')
+                    self.ax.scatter(x, y, s=2000, marker='o',
+                                    edgecolors='none')
                 elif (x, y) in self.goal_states:
                     plt.text(
                         x,
@@ -741,8 +753,10 @@ class GridWorld(MDPEnv):
                         verticalalignment="center",
                         color='lightgrey' if right_value == 0.0 else 'black'
                     ))
-                    plt.plot([x-0.5, x+0.5], [y-0.5, y+0.5], ls='-', lw=1, color='lightgrey')
-                    plt.plot([x + 0.5, x - 0.5], [y - 0.5, y + 0.5], ls='-', lw=1, color='lightgrey')
+                    plt.plot([x-0.5, x+0.5], [y-0.5, y+0.5],
+                             ls='-', lw=1, color='lightgrey')
+                    plt.plot([x + 0.5, x - 0.5], [y - 0.5, y + 0.5],
+                             ls='-', lw=1, color='lightgrey')
         ax.imshow(img, origin="lower")
         plt.title(title)
         plt.show()
@@ -763,7 +777,8 @@ class GridWorld(MDPEnv):
             for x in range(0, self.width):
                 # Draw in the blocked states as a black and white mesh
                 if (x, y) in self.blocked_states:
-                    render_full_blocked_tile(x * tile_size, y * tile_size, tile_size, img)
+                    render_full_blocked_tile(
+                        x * tile_size, y * tile_size, tile_size, img)
                     continue
                 # Draw goal states
                 if (x, y) in self.goal_states:
@@ -932,7 +947,8 @@ class CliffWorld(GridWorld):
         height=4,
         blocked_states=[],
         action_cost=-0.05,
-        goals=[((1, 0), -5), ((2, 0), -5), ((3, 0), -5), ((4, 0), -5), ((5, 0), 0)],
+        goals=[((1, 0), -5), ((2, 0), -5), ((3, 0), -5),
+               ((4, 0), -5), ((5, 0), 0)],
     ):
         super().__init__(
             noise=noise,

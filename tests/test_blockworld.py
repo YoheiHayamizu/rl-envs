@@ -1,5 +1,5 @@
 import gymnasium as gym
-import cp_envs
+import rl_envs
 import time
 
 TIMESTEP = 1000

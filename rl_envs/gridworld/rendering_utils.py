@@ -1,6 +1,6 @@
 import math
 import matplotlib.colors as colours
-from cp_envs.envs.maze.mdp import *
+from rl_envs.gridworld.mdp import *
 import matplotlib.pyplot as plt
 
 COLOURS = {
@@ -54,13 +54,15 @@ def draw_triangle(tile_origin, tile_size, img, colour='red', direction='up'):
 
 
 def render_action_q_value(tileSize, x, y, action, q_values, img, show_text=False, text_size=12, h_text_offset=0, v_text_offset=0, rewardMax=1, rewardMin=1):
-    value = q_values.get_q_value((x, y), action)  # MDP.get_q_value(q_values, (x, y), action=action)
+    # MDP.get_q_value(q_values, (x, y), action=action)
+    value = q_values.get_q_value((x, y), action)
     # make colour red if value is negative, otherwise make it green
     colour = COLOURS['red'] if value < 0 else COLOURS['green']
     scaling_factor = rewardMin if value < 0 else rewardMax
     colour = list(map(lambda c: int(c * math.fabs(value/scaling_factor)),
                       colour))  # scale the colour by the reward (make extremes more vivid)
-    draw_triangle((x * tileSize, y * tileSize), tileSize, img, colour=colour, direction=action)
+    draw_triangle((x * tileSize, y * tileSize), tileSize,
+                  img, colour=colour, direction=action)
     if show_text:
         plt.text(x=x * tileSize + tileSize // 2 + h_text_offset, y=y * tileSize + tileSize // 2 + v_text_offset,
                  s=f'{value:.2f}', size=text_size, verticalalignment='center', horizontalalignment='center', color='white')
