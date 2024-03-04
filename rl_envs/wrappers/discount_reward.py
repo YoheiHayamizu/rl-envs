@@ -21,7 +21,7 @@ class DiscountRewardWrapper(gym.RewardWrapper):
                              "Please wrap the environment with the TimeLimit wrapper.")
 
     def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-        if done:
+        observation, reward, terminated, truncated, info = self.env.step(action)
+        if terminated:
             reward -= self.env._elapsed_steps / self.env._max_episode_steps
-        return observation, reward, done, info
+        return observation, reward, terminated, truncated, info
