@@ -1,4 +1,5 @@
 # necessary for `envs.__init__` which registers all gymnasium environments and loads plugins
+from rl_envs import wrappers
 
 
 from gymnasium.envs.registration import register

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rl-envs"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = ["YoheiHayamizu <hayamizu0111@gmail.com>"]
 readme = "README.md"
