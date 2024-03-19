@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rl-envs"
-version = "0.1.5"
+version = "0.1.6"
 description = ""
 authors = ["YoheiHayamizu <hayamizu0111@gmail.com>"]
 readme = "README.md"
@@ -13,7 +13,12 @@ python = "^3.8.1"
 gymnasium = "^0.29.1"
 pygame = "^2.5.1"
 matplotlib = "^3.4.2"
+pddlgym = {git = "https://github.com/YoheiHayamizu/pddlgym.git"}
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-mock = "^3.12.0"
+autopep8 = "^2.0.4"
 
 [build-system]
 requires = ["poetry-core"]
